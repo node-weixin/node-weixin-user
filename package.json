@@ -1,0 +1,49 @@
+{
+  "name": "node-weixin-user",
+  "version": "0.0.1",
+  "description": "node weixin module for use or its management",
+  "author": {
+    "name": "calidion",
+    "email": "calidion@gmail.com",
+    "url": "blog.3gcnbeta.com"
+  },
+  "repository": "node-weixin/node-weixin-user",
+  "license": "MIT",
+  "files": [
+    "lib",
+    "index.js",
+    "cli.js"
+  ],
+  "keywords": [
+    "node-weixin-user",
+    "node",
+    "weixin",
+    "user"
+  ],
+  "dependencies": {
+    "meow": "^3.1.0",
+    "node-weixin-auth": "^0.1.2",
+    "node-weixin-request": "^0.1.0",
+    "node-weixin-util": "0.0.3",
+    "request": "^2.64.0"
+  },
+  "devDependencies": {
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-contrib-nodeunit": "^0.4.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-cli": "^1.12.0",
+    "jshint-stylish": "^1.0.1",
+    "load-grunt-tasks": "^3.1.0",
+    "node-weixin-auth": "^0.1.2",
+    "node-weixin-config": "^0.1.0",
+    "time-grunt": "^1.1.0",
+    "validator": "^4.1.0"
+  },
+  "scripts": {
+    "test": "grunt"
+  },
+  "bin": {
+    "wxuser": "cli.js"
+  }
+}
