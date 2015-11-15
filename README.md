@@ -1,4 +1,4 @@
-#  [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+#  [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]  [![Coveralls Status][coveralls-image]][coveralls-url]
 
 > node weixin module for use or its management
 微信用户API和命令行工具
@@ -150,3 +150,5 @@ MIT © [calidion](blog.3gcnbeta.com)
 [travis-url]: https://travis-ci.org/node-weixin/node-weixin-user
 [daviddm-image]: https://david-dm.org/node-weixin/node-weixin-user.svg?theme=shields.io
 [daviddm-url]: https://david-dm.org/node-weixin/node-weixin-user
+[coveralls-image]: https://coveralls.io/repos/node-weixin/node-weixin-user/badge.svg?branch=master&service=github
+[coveralls-url]: https://coveralls.io/github/node-weixin/node-weixin-user?branch=master
