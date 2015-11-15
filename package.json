@@ -41,7 +41,9 @@
     "validator": "^4.1.0"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "test-travis": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/"
+
   },
   "bin": {
     "wxuser": "cli.js"
