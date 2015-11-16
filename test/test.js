@@ -124,5 +124,14 @@ describe('node-weixin-user node module', function () {
     });
   });
 
+  it('should be failed to get', function (done) {
+    var get = require('../lib/get');
+    get(app, auth, 'https://you.abc.cc.com/', {
+    }, function(error) {
+      assert.equal(true, error);
+      done();
+    });
+  });
+
 
 });
