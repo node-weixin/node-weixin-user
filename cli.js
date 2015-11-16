@@ -4,7 +4,7 @@ var meow = require('meow');
 var nodeWeixinUser = require('./');
 var config = require('node-weixin-config');
 
-var auth = require('node-weixin-auth').create();
+var auth = require('node-weixin-auth');
 
 var cli = meow({
   help: [
@@ -16,6 +16,7 @@ var cli = meow({
     '  wxuser group in --openid openid --id appid --secret appsecret --token apptoken',
     '  wxuser group update --groupid groupid --name name --id appid --secret appsecret --token apptoken',
     '  wxuser group move --group groupid --openid openid --id appid --secret appsecret --token apptoken',
+    '  wxuser group remove --group groupid --id appid --secret appsecret --token apptoken',
     '',
     'Example',
     '  wxuser list --id "wx111" --secret "wxSecret" --token "wxtoken"'
@@ -76,6 +77,9 @@ switch (command) {
         break;
       case 'move':
         nodeWeixinUser[command][subCmd](app, auth, cli.flags.groupid, cli.flags.openid, callback(command));
+        break;
+      case 'remove':
+        nodeWeixinUser[command][subCmd](app, auth, cli.flags.groupid, callback(command));
         break;
     }
     break;

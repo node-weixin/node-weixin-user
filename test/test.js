@@ -117,5 +117,12 @@ describe('node-weixin-user node module', function () {
     });
   });
 
+  it('should be able to remove a group', function (done) {
+    nodeWeixinUser.group.remove(app, auth, gGroup.id, function (error) {
+      assert.equal(true, !error);
+      done();
+    });
+  });
+
 
 });
