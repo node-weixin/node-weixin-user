@@ -3,9 +3,6 @@
 var meow = require('meow');
 var nodeWeixinUser = require('./');
 var config = require('node-weixin-config');
-
-var auth = require('node-weixin-auth');
-
 var cli = meow({
   help: [
     'Usage',
@@ -53,33 +50,33 @@ switch (command) {
   case 'remark':
     var openid = cli.flags.openid;
     var remark = cli.flags.remark;
-    nodeWeixinUser[command](app, auth, openid, remark, callback(command));
+    nodeWeixinUser[command](app, openid, remark, callback(command));
     break;
   case 'list':
   case 'profile':
     var openid = cli.flags.openid || null;
-    nodeWeixinUser[command](app, auth, openid, callback(command));
+    nodeWeixinUser[command](app, openid, callback(command));
     break;
   case 'group':
     var subCmd = cli.input[1];
     switch (subCmd) {
       case 'create':
-        nodeWeixinUser[command][subCmd](app, auth, cli.flags.name, callback(command));
+        nodeWeixinUser[command][subCmd](app, cli.flags.name, callback(command));
         break;
       case 'get':
-        nodeWeixinUser[command][subCmd](app, auth, callback(command));
+        nodeWeixinUser[command][subCmd](app, callback(command));
         break;
       case 'in':
-        nodeWeixinUser[command][subCmd](app, auth, cli.flags.openid, callback(command));
+        nodeWeixinUser[command][subCmd](app, cli.flags.openid, callback(command));
         break;
       case 'update':
-        nodeWeixinUser[command][subCmd](app, auth, cli.flags.groupid, cli.flags.name, callback(command));
+        nodeWeixinUser[command][subCmd](app, cli.flags.groupid, cli.flags.name, callback(command));
         break;
       case 'move':
-        nodeWeixinUser[command][subCmd](app, auth, cli.flags.groupid, cli.flags.openid, callback(command));
+        nodeWeixinUser[command][subCmd](app, cli.flags.groupid, cli.flags.openid, callback(command));
         break;
       case 'remove':
-        nodeWeixinUser[command][subCmd](app, auth, cli.flags.groupid, callback(command));
+        nodeWeixinUser[command][subCmd](app, cli.flags.groupid, callback(command));
         break;
     }
     break;
