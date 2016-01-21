@@ -20,6 +20,16 @@ module.exports = {
       lang: 'zh_CN'
     }, cb);
   },
+  batchProfiles: function(app, openIds, cb) {
+    var user_list = [];
+    for (var i = 0; i < openIds.length; i++) {
+      var user = {openid: openIds[i], lang: "zh-CN"};
+      user_list.push(user);
+    }
+    send(app, 'https://api.weixin.qq.com/cgi-bin/user/info/batchget?', {
+      user_list: user_list
+    }, cb);
+  },
   list: function(app, openid, cb) {
     var params = {};
     if (openid) {
