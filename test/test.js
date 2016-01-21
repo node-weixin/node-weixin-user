@@ -8,7 +8,7 @@ var app = {
   secret: process.env.APP_SECRET,
   token: process.env.APP_TOKEN
 };
-var auth = require("node-weixin-auth");
+
 var config = require("node-weixin-config");
 config.app.init(app);
 

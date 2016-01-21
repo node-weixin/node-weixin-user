@@ -99,36 +99,36 @@ var nodeWeixinUser = require('node-weixin-user');
   
   //用户操作
   //更新备注
-  nodeWeixinUser.remark(app, auth, process.env.APP_OPENID, '新备注', function (error, data) {
+  nodeWeixinUser.remark(app, process.env.APP_OPENID, '新备注', function (error, data) {
   });
   
   //获取用户信息
-  nodeWeixinUser.profile(app, auth, process.env.APP_OPENID, function (error, data) {
+  nodeWeixinUser.profile(app, process.env.APP_OPENID, function (error, data) {
   });
   
   //获取用户列表
-  nodeWeixinUser.list(app, auth, null, function (error, data) {
+  nodeWeixinUser.list(app, null, function (error, data) {
   });
   
   //组操作
   //获取组信息
-  nodeWeixinUser.group.get(app, auth, function (error, data) {
+  nodeWeixinUser.group.get(app, function (error, data) {
   });
   
   //创建组
-  nodeWeixinUser.group.create(app, auth, 'hello', function (error, data) {
+  nodeWeixinUser.group.create(app, 'hello', function (error, data) {
   });
   
   //获取用户组名
-  nodeWeixinUser.group.in(app, auth, openid, function (error, data) {
+  nodeWeixinUser.group.in(app, openid, function (error, data) {
   });
   
   //更新组信息
-  nodeWeixinUser.group.update(app, auth, gGroup.id, 'new name', function (error, data) {
+  nodeWeixinUser.group.update(app, gGroup.id, 'new name', function (error, data) {
   });
       
   //移动用户组属性
-  nodeWeixinUser.group.move(app, auth, gGroup.id, process.env.APP_OPENID, function (error, data) {
+  nodeWeixinUser.group.move(app, gGroup.id, process.env.APP_OPENID, function (error, data) {
   });
       
 ```
