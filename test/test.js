@@ -131,8 +131,9 @@ describe('node-weixin-user node module', function () {
   it('should be failed to get', function (done) {
     var get = require('../lib/get');
     get(app, 'https://you.abc.cc.com/', {
-    }, function(error) {
+    }, function(error, data) {
       assert.equal(true, error);
+      assert.equal(true, data.message === 'Error: ETIMEDOUT');
       done();
     });
   });
