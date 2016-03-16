@@ -71,10 +71,12 @@ describe('node-weixin-user node module', function() {
   it('should be able to get profile', function(done) {
     nodeWeixinUser.profile(app, process.env.APP_OPENID, function(error, data) {
       assert.equal(true, !error);
-      assert.equal(true, validator.isInt(data.subscribe));
+      assert.equal(true, typeof data.subscribe === 'number');
+      assert.equal(true, validator.isInt(String(data.subscribe)));
       assert.equal(true, data.openid === process.env.APP_OPENID);
       assert.equal(true, typeof data.nickname === 'string');
-      assert.equal(true, validator.isInt(data.sex));
+      assert.equal(true, typeof data.sex === 'number');
+      assert.equal(true, validator.isInt(String(data.sex)));
       assert.equal(true, typeof data.language === 'string');
       assert.equal(true, typeof data.city === 'string');
       assert.equal(true, typeof data.country === 'string');
