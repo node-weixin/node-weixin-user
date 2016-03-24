@@ -2,6 +2,7 @@
 var assert = require('assert');
 var nodeWeixinUser = require('../');
 var validator = require("validator");
+var settings = require('node-weixin-settings');
 
 var app = {
   id: process.env.APP_ID,
@@ -134,6 +135,23 @@ describe('node-weixin-user node module', function () {
     }, function(error) {
       assert.equal(true, error);
       done();
+    });
+  });
+
+  it('should be timeout to get', function (done) {
+    var get = require('../lib/get');
+    settings.set(app.id,'request',{
+      timeout:1
+    },function(){
+      get(app, 'https://you.abc.cc.com/', {
+      }, function(error,data) {
+        assert.equal(data.message,'Error: ETIMEDOUT');
+        settings.set(app.id,'request',{
+          timeout:null
+        },function(){
+          done();
+        });
+      });
     });
   });
 
