@@ -7,6 +7,8 @@
 var assert = require('assert');
 var nodeWeixinUser = require('../');
 var validator = require('validator');
+var settings = require('node-weixin-settings');
+var async = require('async');
 
 var app = {
   id: process.env.APP_ID,
@@ -19,17 +21,43 @@ config.app.init(app);
 
 describe('node-weixin-user node module', function() {
   var gGroup;
+  it('should clear all groups', function(done) {
+    nodeWeixinUser.group.get(settings, app, function(error, data) {
+      assert.equal(true, !error);
+      assert.equal(true, data.groups.length > 0);
+      for (var i = 0; i < data.groups.length; i++) {
+        var group = data.groups[i];
+        assert.equal(true, group.id >= 0);
+        assert.equal(true, group.count >= 0);
+        assert.equal(true, group.name.length >= 1);
+        assert.equal(true, typeof group.name === 'string');
+      }
+      async.eachSeries(data.groups, function eachGroup(item, cb) {
+        if (item.id < 100) {
+          return cb();
+        }
+        nodeWeixinUser.group.remove(settings, app, item.id, function(error) {
+          assert.equal(true, !error);
+          cb();
+        });
+      }, function finalGroup() {
+        done();
+      });
+    });
+  });
+
   it('should be able to create group', function(done) {
-    nodeWeixinUser.group.create(app, 'hello', function(error, data) {
+    nodeWeixinUser.group.create(settings, app, 'hello', function(error, data) {
       assert.equal(true, !error);
       gGroup = data.group;
+      assert.equal(true, typeof data.group === 'object');
       assert.equal(true, typeof data.group.id === 'number');
       assert.equal(true, typeof data.group.name === 'string');
       done();
     });
   });
   it('should be able to get group', function(done) {
-    nodeWeixinUser.group.get(app, function(error, data) {
+    nodeWeixinUser.group.get(settings, app, function(error, data) {
       assert.equal(true, !error);
       assert.equal(true, data.groups.length > 0);
       for (var i = 0; i < data.groups.length; i++) {
@@ -43,7 +71,7 @@ describe('node-weixin-user node module', function() {
     });
   });
   it('should be able to get group of user', function(done) {
-    nodeWeixinUser.group.in(app, process.env.APP_OPENID, function(error, data) {
+    nodeWeixinUser.group.in(settings, app, process.env.APP_OPENID, function(error, data) {
       assert.equal(true, !error);
       assert.equal(true, typeof data.groupid === 'number');
       done();
@@ -51,7 +79,7 @@ describe('node-weixin-user node module', function() {
   });
 
   it('should be able to update a group', function(done) {
-    nodeWeixinUser.group.update(app, gGroup.id, 'new name', function(error, data) {
+    nodeWeixinUser.group.update(settings, app, gGroup.id, 'new name', function(error, data) {
       assert.equal(true, !error);
       assert.equal(true, data.errcode === 0);
       assert.equal(true, data.errmsg === 'ok');
@@ -60,7 +88,7 @@ describe('node-weixin-user node module', function() {
   });
 
   it('should be able to update remark', function(done) {
-    nodeWeixinUser.remark(app, process.env.APP_OPENID, '新备注', function(error, data) {
+    nodeWeixinUser.remark(settings, app, process.env.APP_OPENID, '新备注', function(error, data) {
       assert.equal(true, !error);
       assert.equal(true, data.errcode === 0);
       assert.equal(true, data.errmsg === 'ok');
@@ -69,7 +97,7 @@ describe('node-weixin-user node module', function() {
   });
 
   it('should be able to get profile', function(done) {
-    nodeWeixinUser.profile(app, process.env.APP_OPENID, function(error, data) {
+    nodeWeixinUser.profile(settings, app, process.env.APP_OPENID, function(error, data) {
       assert.equal(true, !error);
       assert.equal(true, typeof data.subscribe === 'number');
       assert.equal(true, validator.isInt(String(data.subscribe)));
@@ -88,7 +116,7 @@ describe('node-weixin-user node module', function() {
   });
 
   it('should be able to list users without openid', function(done) {
-    nodeWeixinUser.list(app, null, function(error, data) {
+    nodeWeixinUser.list(settings, app, null, function(error, data) {
       assert.equal(true, !error);
       assert.equal(true, data.total >= 1);
       assert.equal(true, data.count >= 1);
@@ -100,7 +128,7 @@ describe('node-weixin-user node module', function() {
   });
 
   it('should be able to list users', function(done) {
-    nodeWeixinUser.list(app, process.env.APP_OPENID, function(error, data) {
+    nodeWeixinUser.list(settings, app, process.env.APP_OPENID, function(error, data) {
       assert.equal(true, !error);
       assert.equal(true, data.total >= 0);
       assert.equal(true, data.count >= 0);
@@ -112,7 +140,7 @@ describe('node-weixin-user node module', function() {
   });
 
   it('should be able to move to a new group', function(done) {
-    nodeWeixinUser.group.move(app, gGroup.id, process.env.APP_OPENID, function(error, data) {
+    nodeWeixinUser.group.move(settings, app, gGroup.id, process.env.APP_OPENID, function(error, data) {
       assert.equal(true, !error);
       if (data.errcode !== 40050) {
         assert.equal(true, data.errcode === 0);
@@ -123,7 +151,7 @@ describe('node-weixin-user node module', function() {
   });
 
   it('should be able to remove a group', function(done) {
-    nodeWeixinUser.group.remove(app, gGroup.id, function(error) {
+    nodeWeixinUser.group.remove(settings, app, gGroup.id, function(error) {
       assert.equal(true, !error);
       done();
     });
@@ -131,7 +159,7 @@ describe('node-weixin-user node module', function() {
 
   it('should be failed to get', function(done) {
     var get = require('../lib/get');
-    get(app, 'https://you.abc.cc.com/', {}, function(error) {
+    get(settings, app, 'https://you.abc.cc.com/', {}, function(error) {
       assert.equal(true, error);
       done();
     });
