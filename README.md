@@ -75,6 +75,7 @@ $ npm install --save node-weixin-user
 
 ```js
 var nodeWeixinUser = require('node-weixin-user');
+var settings = require('node-weixin-settings');
   var app = {
     id: process.env.APP_ID,
     secret: process.env.APP_SECRET,
@@ -86,36 +87,36 @@ var nodeWeixinUser = require('node-weixin-user');
 
   //用户操作
   //更新备注
-  nodeWeixinUser.remark(app, process.env.APP_OPENID, '新备注', function (error, data) {
+  nodeWeixinUser.remark(settings, app, process.env.APP_OPENID, '新备注', function (error, data) {
   });
 
   //获取用户信息
-  nodeWeixinUser.profile(app, process.env.APP_OPENID, function (error, data) {
+  nodeWeixinUser.profile(settings, app, process.env.APP_OPENID, function (error, data) {
   });
 
   //获取用户列表
-  nodeWeixinUser.list(app, null, function (error, data) {
+  nodeWeixinUser.list(settings, app, null, function (error, data) {
   });
 
   //组操作
   //获取组信息
-  nodeWeixinUser.group.get(app, function (error, data) {
+  nodeWeixinUser.group.get(settings, app, function (error, data) {
   });
 
   //创建组
-  nodeWeixinUser.group.create(app, 'hello', function (error, data) {
+  nodeWeixinUser.group.create(settings, app, 'hello', function (error, data) {
   });
 
   //获取用户组名
-  nodeWeixinUser.group.in(app, openid, function (error, data) {
+  nodeWeixinUser.group.in(settings, app, openid, function (error, data) {
   });
 
   //更新组信息
-  nodeWeixinUser.group.update(app, gGroup.id, 'new name', function (error, data) {
+  nodeWeixinUser.group.update(settings, app, gGroup.id, 'new name', function (error, data) {
   });
 
   //移动用户组属性
-  nodeWeixinUser.group.move(app, gGroup.id, process.env.APP_OPENID, function (error, data) {
+  nodeWeixinUser.group.move(settings, app, gGroup.id, process.env.APP_OPENID, function (error, data) {
   });
 
 ```
