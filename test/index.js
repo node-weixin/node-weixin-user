@@ -21,6 +21,7 @@ config.app.init(app);
 
 describe('node-weixin-user node module', function() {
   var gGroup;
+  var gTag;
   it('should clear all groups', function(done) {
     nodeWeixinUser.group.get(settings, app, function(error, data) {
       assert.strictEqual(true, !error);
@@ -161,6 +162,135 @@ describe('node-weixin-user node module', function() {
     var get = require('../lib/get');
     get(settings, app, 'https://you.abc.cc.com/', {}, function(error) {
       assert.strictEqual(true, error);
+      done();
+    });
+  });
+
+  it('should be able to create tag', function(done) {
+    nodeWeixinUser.tags.create(settings, app, 'tag1', function(error, data) {
+      assert.strictEqual(true, !error);
+      gTag = data.tag;
+      assert.strictEqual(true, typeof data.tag === 'object');
+      assert.strictEqual(true, typeof data.tag.id === 'number');
+      done();
+    });
+  });
+  it('should be able to get tags', function(done) {
+    nodeWeixinUser.tags.get(settings, app, function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.tags.length > 0);
+      for (var i = 0; i < data.tags.length; i++) {
+        var tag = data.tags[i];
+        assert.strictEqual(true, tag.id >= 0);
+        assert.strictEqual(true, tag.count >= 0);
+        assert.strictEqual(true, tag.name.length >= 1);
+        assert.strictEqual(true, typeof tag.name === 'string');
+      }
+      done();
+    });
+  });
+  it('should be able to update a tag', function(done) {
+    nodeWeixinUser.tags.update(settings, app, gTag.id, 'new name', function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.errcode === 0);
+      assert.strictEqual(true, data.errmsg === 'ok');
+      done();
+    });
+  });
+  it('should be able to tag users', function(done) {
+    var userIds = [];
+    userIds.push(process.env.APP_OPENID);
+    nodeWeixinUser.tags.tagUsers(settings, app, gTag.id, userIds, function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.errcode === 0);
+      assert.strictEqual(true, data.errmsg === 'ok');
+      done();
+    });
+  });
+  it('should be able to get tags of a user', function(done) {
+    nodeWeixinUser.tags.getTagIdList(settings, app, process.env.APP_OPENID, function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.tagid_list.count >= 0);
+      done();
+    });
+  });
+  it('should be able to untag users', function(done) {
+    var userIds = [];
+    userIds.push(process.env.APP_OPENID);
+    nodeWeixinUser.tags.untagUsers(settings, app, gTag.id, userIds, function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.errcode === 0);
+      assert.strictEqual(true, data.errmsg === 'ok');
+      done();
+    });
+  });
+  it('should be able to list users by tag without openid', function(done) {
+    nodeWeixinUser.tags.list(settings, app, gTag.id, null, function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.count >= 0);
+      if (data.data && data.data.openid) {
+        assert.strictEqual(true, data.data.openid.length >= 0);
+      }
+      done();
+    });
+  });
+  it('should be able to list users by tag with openid', function(done) {
+    nodeWeixinUser.tags.list(settings, app, gTag.id, process.env.APP_OPENID, function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.count >= 0);
+      if (data.data && data.data.openid) {
+        assert.strictEqual(true, data.data.openid.length >= 0);
+      }
+      done();
+    });
+  });
+  it('should be able to get blacklist without openid', function(done) {
+    nodeWeixinUser.tags.getBlackList(settings, app, null, function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.total >= 0);
+      assert.strictEqual(true, data.count >= 0);
+      if (data.data && data.data.openid) {
+        assert.strictEqual(true, data.data.openid.length >= 0);
+      }
+      done();
+    });
+  });
+  it('should be able to get blacklist with openid', function(done) {
+    nodeWeixinUser.tags.getBlackList(settings, app, process.env.APP_OPENID, function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.total >= 0);
+      assert.strictEqual(true, data.count >= 0);
+      if (data.data && data.data.openid) {
+        assert.strictEqual(true, data.data.openid.length >= 0);
+      }
+      done();
+    });
+  });
+  it('should be able to add users to blacklist', function(done) {
+    var userIds = [];
+    userIds.push(process.env.APP_OPENID);
+    nodeWeixinUser.tags.batchBlackList(settings, app, userIds, function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.errcode === 0);
+      assert.strictEqual(true, data.errmsg === 'ok');
+      done();
+    });
+  });
+  it('should be able to remove users from blacklist', function(done) {
+    var userIds = [];
+    userIds.push(process.env.APP_OPENID);
+    nodeWeixinUser.tags.batchUnblackList(settings, app, userIds, function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.errcode === 0);
+      assert.strictEqual(true, data.errmsg === 'ok');
+      done();
+    });
+  });
+  it('should be able to remove a tag', function(done) {
+    nodeWeixinUser.tags.remove(settings, app, gTag.id, function(error, data) {
+      assert.strictEqual(true, !error);
+      assert.strictEqual(true, data.errcode === 0);
+      assert.strictEqual(true, data.errmsg === 'ok');
       done();
     });
   });
