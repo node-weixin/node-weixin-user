@@ -7,7 +7,7 @@
 微信用户API是([node-weixin-api](https://github.com/node-weixin/node-weixin-api) 或者 [node-weixin-express](https://github.com/node-weixin/node-weixin-express))的一个子项目。
 它提供:
 
-1. 菜单API共计8个:
+1. 菜单API共计19个:
 
   list: 列举订阅用户
 
@@ -25,11 +25,41 @@
 
   group.move: 修改用户组属性
 
+  tags.create: 创建标签
+
+  tags.get: 获取公众号已创建的标签
+
+  tags.update: 编辑标签
+
+  tags.remove: 删除标签
+
+  tags.list: 获取标签下粉丝列表
+
+  tags.tagUsers: 批量为用户打标签
+
+  tags.untagUsers: 批量为用户取消标签
+
+  tags.getTagIdList: 获取用户身上的标签列表
+
+  tags.getBlackList: 获取公众号的黑名单列表
+
+  tags.batchBlackList: 拉黑用户
+
+  tags.batchUnblackList: 取消拉黑用户
+
 2. 所有数据返回格式采用json,并与腾讯api上说明一致。回调函数格式如下：
     function(error, json) {
     //error为false表示返回正常
     //json对应api说明
     }
+
+   正确时返回 JSON数据包
+   ···js
+   {
+      "errcode": 0,
+      "errmsg": "ok"
+   }
+   ···
 
 交流QQ群: 39287176
 
@@ -117,6 +147,52 @@ var settings = require('node-weixin-settings');
 
   //移动用户组属性
   nodeWeixinUser.group.move(settings, app, gGroup.id, process.env.APP_OPENID, function (error, data) {
+  });
+
+  //标签操作
+  //创建标签
+  nodeWeixinUser.tags.create(settings, app, name, function (error, data)) {
+  });
+
+  //获取公众号已创建的标签
+  nodeWeixinUser.tags.get(settings, app, function (error, data)) {
+  });
+
+  //编辑标签
+  nodeWeixinUser.tags.update(settings, app, tagId, newName, function (error, data)) {
+  });
+
+  //删除标签
+  nodeWeixinUser.tags.remove(settings, app, tagId, function (error, data)) {
+  });
+
+  //获取标签下粉丝列表
+  nodeWeixinUser.tags.list(settings, app, tagId, openId, function (error, data)) {
+  });
+
+  //批量为用户打标签
+  nodeWeixinUser.tags.tagUsers(settings, app, tagId, OpenIdList, function (error, data)) {
+  });
+
+  //批量为用户取消标签
+  nodeWeixinUser.tags.untagUsers(settings, app, tagId, OpenIdList, function (error, data)) {
+  });
+
+  //获取用户身上的标签列表
+  nodeWeixinUser.tags.getTagIdList(settings, app, openId, function (error, data)) {
+  });
+
+  //黑名单管理
+  //获取公众号的黑名单列表
+  nodeWeixinUser.tags.getBlackList(settings, app, openId, function (error, data)) {
+  });
+  
+  //拉黑用户
+  nodeWeixinUser.tags.batchBlackList(settings, app, OpenIdList, function (error, data)) {
+  });
+
+  //取消拉黑用户
+  nodeWeixinUser.tags.batchUnblackList(settings, app, OpenIdList, function (error, data)) {
   });
 
 ```
